@@ -84,7 +84,7 @@ void F_F(vector<int> &from, vector<int> &to, vector<int> &constraint, int tops)
 
 int main()
 {
-    ifstream fail(".//../time_1/Random_FF.txt");
+    ifstream fail("..//../Grafs/Random_FF.txt");
     if (!fail)
     {
         cout << "I can't to do this act =(";
