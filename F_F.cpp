@@ -32,17 +32,17 @@ bool DFS(vector<int> &from, vector<int> &to, vector<int> &constraint, int &tops,
             used [ path.back() ] = true;
             path.push_back( to[index] );
         }
-    } while( to[index] != tops-1 );
+    } while( to[index] != 1 );
     //tops - 1 = last top
     return true;
 }
 
-void F_F(vector<int> &from, vector<int> &to, vector<int> &constraint, int tops)
+void F_F(vector<int> &from, vector<int> &to, vector<int> &constraint, int &tops)
 {
     int MinFlowOnTops = 0x7fffffff;
     bool _from = false, _to = false;
     vector <int> path;
-    vector <int> flow(from.size(), 0);
+    int value_of_flow = 0;
     while (DFS(from, to, constraint, tops, path, MinFlowOnTops) ){
         for (size_t p = 1; p < path.size() ; p++)
         {
@@ -52,13 +52,11 @@ void F_F(vector<int> &from, vector<int> &to, vector<int> &constraint, int tops)
                     if (!_from){
                         _from = true;
                         constraint[j] -= MinFlowOnTops;
-                        flow[j] = MinFlowOnTops;
                 }
                 if(from[j] == path[p] && to[j] == path[p-1] )
                     if (!_to){
                         _to = true;
                         constraint[j] += MinFlowOnTops;
-                        flow[j] = -MinFlowOnTops;
                 }
                 if (_to && _from)
                     break;
@@ -67,39 +65,44 @@ void F_F(vector<int> &from, vector<int> &to, vector<int> &constraint, int tops)
                 from.push_back(path[p]);
                 to.push_back(path[p-1]);
                 constraint.push_back(MinFlowOnTops);
-                flow.push_back(-MinFlowOnTops);
             }
             _from = false; _to = false;
         }
+        value_of_flow += MinFlowOnTops;
         MinFlowOnTops = 0x7fffffff;
         path.clear();
     }
 
 //  結論
-    cout << "flow =\n";
-    for (unsigned i = 0; i < flow.size(); i++)
-       cout << ' ' << flow[i];
-     cout << '\n';
+    cout << "flow = " << value_of_flow << endl;
 }
 
 int main()
 {
-    ifstream fail("..//../Grafs/Random_FF.txt");
+    ifstream fail("..//../test/test6.in");
     if (!fail)
     {
         cout << "I can't to do this act =(";
         return 1;
     }
-    int tops, edges;
-    fail >> tops >> edges;
-
-    int a, b, c;
+    int tops;
+    fail >> tops;
     vector <int> from, to, constraint;
-    while (fail >> a >> b >> c)
+//    vector<vector<int> > ways(tops);
+    int a, i = 0, j = 0;
+
+    while (fail >> a)
     {
-        from.push_back(a);
-        to.push_back(b);
-        constraint.push_back(c);
+        if (a){
+            from.push_back(i);
+            to.push_back(j);
+            constraint.push_back(a);
+        }
+        ++j;
+        if (j == tops){
+            j = 0;
+            ++i;
+        }
     }
     fail.close();
 
