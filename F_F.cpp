@@ -3,6 +3,7 @@
 #include <fstream>
 
 using namespace std;
+int ggwp=0;
 
 bool DFS(vector<int> &from, vector<int> &to, vector<int> &constraint, int &tops, vector<int> &path, int &MFOT)
 {//form 0 to last top
@@ -12,9 +13,9 @@ bool DFS(vector<int> &from, vector<int> &to, vector<int> &constraint, int &tops,
     int index;
     do{
         index = -1;
-        for (size_t i = 0; i < from.size(); i++)
+        for (size_t i = tops*path.back(), j = 0; j < tops; i++, j++)
         {
-            if (from[i] == path.back() && !used[ to[i] ] && constraint[i]){
+            if (!used[ to[i] ] && constraint[i]){
                 index = i;
                 break;
             }
@@ -32,7 +33,9 @@ bool DFS(vector<int> &from, vector<int> &to, vector<int> &constraint, int &tops,
             used [ path.back() ] = true;
             path.push_back( to[index] );
         }
+        cout << ggwp++ << "\n";
     } while( to[index] != 1 );
+
     //tops - 1 = last top
     return true;
 }
@@ -79,7 +82,7 @@ void F_F(vector<int> &from, vector<int> &to, vector<int> &constraint, int &tops)
 
 int main()
 {
-    ifstream fail("..//../test/test6.in");
+    ifstream fail(".//../test/test2.in");
     if (!fail)
     {
         cout << "I can't to do this act =(";
@@ -93,11 +96,9 @@ int main()
 
     while (fail >> a)
     {
-        if (a){
-            from.push_back(i);
-            to.push_back(j);
-            constraint.push_back(a);
-        }
+        from.push_back(i);
+        to.push_back(j);
+        constraint.push_back(a);
         ++j;
         if (j == tops){
             j = 0;
@@ -105,6 +106,7 @@ int main()
         }
     }
     fail.close();
+    cout << "fail.close()\n";
 
     F_F(from, to, constraint, tops);
 //    getchar();
