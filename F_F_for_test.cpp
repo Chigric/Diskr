@@ -3,14 +3,9 @@
 #include <fstream>
 
 using namespace std;
-//int ggwp=0;
 
 void DFS_for_F_F(vector<vector<int> > &ways, int &tops, vector<bool> &used, vector<int> &path, int &MFOT, bool &wayExist)
 {
-//    bool itIsNotWay = false;
-//    int index;
-//    do{
-//        index = -1;
     for (int i = path.back(), j = 0; j < tops; j++)
     {
         if (!used[j] && ways[i][j]){
@@ -18,20 +13,14 @@ void DFS_for_F_F(vector<vector<int> > &ways, int &tops, vector<bool> &used, vect
                 MFOT = ways[i][j];
             used [i] = true;
             path.push_back( j );
-
             if (j != 1){
                 DFS_for_F_F(ways, tops, used, path, MFOT, wayExist);
             } else wayExist = true;
-//            path.push_back(j);
-//            RecalculateConstraint(ways, path.back(), MFOT);
             if (wayExist){
                 ways[i][j] -= MFOT;
                 ways[j][i] += MFOT;
+                return;
             }
-//            path.pop_back();
-
-//            wayExist = true;
-            return;
         }
     }
     //it's vAry badly
@@ -42,16 +31,12 @@ void DFS_for_F_F(vector<vector<int> > &ways, int &tops, vector<bool> &used, vect
         wayExist = false;
         return;
     }
-    //cout << ggwp++ << "\n";
-//    } while( ways[i][j] != 1 );
-
-    //tops - 1 = last top
 }
 
 void F_F(vector<vector<int> > &ways, int &tops)
 {
     int value_of_flow = 0;
-    bool /*_from = false, _to = false,*/ wayExist /*= false*/;
+    bool wayExist;
     do{
         vector <bool> used(tops, false);
         vector <int> path;
@@ -60,29 +45,6 @@ void F_F(vector<vector<int> > &ways, int &tops)
         wayExist = false;
 
         DFS_for_F_F(ways, tops, used, path, MinFlowOnTops, wayExist);
-//        for (size_t p = 1; p < path.size() ; p++)
-//        {
-//            for (size_t j = 0; j < from.size(); j++)
-//            {
-//                if(from[j] == path[p-1] && to[j] == path[p] )
-//                    if (!_from){
-//                        _from = true;
-//                        constraint[j] -= MinFlowOnTops;
-//                }
-//                if(from[j] == path[p] && to[j] == path[p-1] )
-//                    if (!_to){
-//                        _to = true;
-//                        constraint[j] += MinFlowOnTops;
-//                }
-//                if (_to && _from)
-//                    break;
-//            }
-//            if (!_to){
-//                from.push_back(path[p]);
-//                to.push_back(path[p-1]);
-//                constraint.push_back(MinFlowOnTops);
-//            }
-//            _from = false; _to = false;
         if (wayExist)
             value_of_flow += MinFlowOnTops;
     } while (wayExist);
@@ -92,7 +54,7 @@ void F_F(vector<vector<int> > &ways, int &tops)
 
 int main()
 {
-    ifstream fail(".//../test/test1.in");
+    ifstream fail(".//../test/test7.in");
     if (!fail)
     {
         cout << "I can't to do this act =(";
@@ -100,7 +62,6 @@ int main()
     }
     int tops;
     fail >> tops;
-    //vector <int> from, to, constraint;
     vector<vector<int> > ways(tops);
     int a, i = 0, j = 0;
 
