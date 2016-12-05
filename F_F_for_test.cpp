@@ -54,7 +54,7 @@ void F_F(vector<vector<int> > &ways, int &tops)
 
 int main()
 {
-    ifstream fail(".//../test/test7.in");
+    ifstream fail(".//../test/test8.in");
     if (!fail)
     {
         cout << "I can't to do this act =(";
